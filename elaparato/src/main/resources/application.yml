@@ -1,0 +1,33 @@
+server:
+    port: 8081
+spring:
+    application:
+        name: elaparato
+    datasource:
+        password: root
+        url: jdbc:mysql://localhost:3307/elaparato?serverTimezone=UTC
+        username: root
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+            ddl-auto: update
+
+    security:
+        oauth2:
+            resource-server:
+                jwt:
+                    jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+                    issuer-uri: http://localhost:8080/realms/el-aparato-sereno
+
+jwt:
+    auth:
+        converter:
+            principal-attribute: preferred_username
+            resource-id: api-gateway-client
+
+el-aparato-sereno:
+    keycloak:
+        realm: el-aparato-sereno
+        clientId: backend
+        clientSecret: OPbxMmVTvDPFlhHPXjn7SKtZr2didUTX
+        serverUrl: http://localhost:8080/

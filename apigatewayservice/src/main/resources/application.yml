@@ -1,0 +1,29 @@
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak-provider:
+            issuer-uri: http://localhost:8080/realms/el-aparato-sereno
+        registration:
+          api-gateway-service:
+            provider: keycloak-provider
+            client-id: api-gateway-client
+            client-secret: O0q64jIrekEw8ZoeMSAVxW1qAsDqPHS3
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:9090/login/oauth2/code/keycloak
+            scope:
+              - openid
+
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: el-aparato-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/**
+
+server:
+  port: 9090
